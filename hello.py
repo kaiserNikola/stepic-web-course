@@ -8,5 +8,5 @@ def app(environ, start_response):
     #for pp in pairs:
     #    a, b = pp.splir('=')
     #    d[a].append(b)
-    return pairs
+    return [bytes("{}\r\n".format(p), 'utf-8') for p in pairs]
 
