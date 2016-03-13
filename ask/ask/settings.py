@@ -81,9 +81,19 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'stepic',
-	'USER': 'root',
-	'HOST': '127.0.0.1',
-	'PORT': '3306',
+		'USER': 'root',
+		'HOST': '127.0.0.1',
+		'PORT': '3306',
+		# https://blog.ionelmc.ro/2014/12/28/terrible-choices-mysql/
+		'OPTIONS': {
+            'sql_mode': 'TRADITIONAL',
+            'charset': 'utf8',
+            'init_command': 'SET '
+                'storage_engine=INNODB,'
+                'character_set_connection=utf8,'
+                'collation_connection=utf8_bin,'
+                'SESSION TRANSACTION ISOLATION LEVEL READ COMMITTED',
+        } 		
     }
 }
 
@@ -110,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-ru'
 
 TIME_ZONE = 'UTC'
 

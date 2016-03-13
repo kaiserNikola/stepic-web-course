@@ -1,0 +1,21 @@
+{% extends 'qa/base.html' %}
+
+{% block content %}
+
+<h1>{{ title }}</h1>
+
+<ul>
+{% for q in page.object_list %}
+	<li><a href="{{ q.get_absolute_url }}">{{ q.title }}</a></li>
+{% endfor %}
+</ul>
+
+{% for p in page.paginator.page_range %}
+	{% if p == page.number %}
+		{{ p }}
+	{% else %}
+		<a href="{{ paginator.baseurl }}?page={{p}}&limit=2">{{p}}</a>
+	{% endif %}
+{% endfor %}
+
+{% endblock %}
