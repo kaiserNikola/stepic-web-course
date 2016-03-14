@@ -4,19 +4,23 @@
 
 <h1>{{ title }}</h1>
 
-<ul>
+<ol>
+
 {% for q in page.object_list %}
-	<li>{{ q.title }}
-          <a href="{{ q.get_absolute_url }}">more...</a></li>
+	<li>
+          <a href="{{ q.get_absolute_url }}">
+		{{ q.title }}
+	</a></li>
 {% endfor %}
-</ul>
+</ol>
+
 
 {% for p in page.paginator.page_range %}
-	{% if p == page.number %}
-		{{ p }}
-	{% else %}
-		<a href="{{ paginator.baseurl }}?page={{p}}&limit=2">{{p}}</a>
-	{% endif %}
+	<a href="{{ paginator.baseurl }}?page={{p}}"
+		{% if p == page.number %}
+		class="active"
+		{% endif %}
+		>{{p}}</a>
 {% endfor %}
 
 {% endblock %}
