@@ -1,15 +1,24 @@
-git config --global user.email "kaiserNikola@github.com"                              
+git config --global user.email "kaiserNikola@noreply.github.com"                              
 git config --global user.name "kaiserNikola"             
+
+
+sudo rm /usr/bin/python
+sudo ln /urs/bin/python3 /usr/bin/python
+sudo rm /usr/bin/python2                                 
+sudo ln -s /usr/bin/python3 /usr/bin/python2             
+sudo rm /usr/bin/python2.7                               
+sudo ln -s /usr/bin/python3 /usr/bin/python2.7 
 
 
 sudo ln -s /home/box/web/etc/nginx.conf  /etc/nginx/sites-enabled/test.conf
 sudo rm /etc/nginx/sites-enabled/default
 sudo /etc/init.d/nginx restart
 
-sudo apt-get update
+sudo apt-get update && sudo apt-get upgrade
 sudo apt-get install python3-dev libmysqlclient-dev
 sudo pip3 install gunicorn django mysqlclient
 
+sudo service mysql restart
 
 mysql -u root -e "create database stepic CHARACTER SET utf8 COLLATE utf8_general_ci;"
 mysql -u root -e "CREATE USER 'box'@'localhost' IDENTIFIED BY '1234';"
