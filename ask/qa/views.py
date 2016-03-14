@@ -25,7 +25,7 @@ def paginate(request, qs):
 	return page
 
 def recent_questions(request):
-	qs = Question.objects.order_by('-added_at').all()
+	qs = Question.objects.order_by('-id').all()
 	page = paginate(request, qs)
 	return render(request, 'qa/questions.html', {
 		'page': page,

@@ -6,7 +6,8 @@
 
 <ul>
 {% for q in page.object_list %}
-	<li><a href="{{ q.get_absolute_url }}">{{ q.title }}</a></li>
+	<li>{{ q.title }}
+          <a href="{{ q.get_absolute_url }}">more...</a></li>
 {% endfor %}
 </ul>
 
