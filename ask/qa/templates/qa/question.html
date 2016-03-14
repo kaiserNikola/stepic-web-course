@@ -7,7 +7,7 @@
 <p>{{ q.text }}</p>
 
 <ul>
-	{% for a in q.answers.all %}
+	{% for a in q.answer_set.all %}
 	<li>{{ a.author }}: {{ a.text }}</li>
 	{% endfor %}
 </ul>
