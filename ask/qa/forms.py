@@ -16,7 +16,7 @@ class AskForm(forms.Form):
 
 class AnswerForm(forms.Form):
 	text     = forms.CharField()
-	question = forms.IntegerField(required=False)
+	question = forms.IntegerField()
 		
 	def save(self):
 		user, created = User.objects.get_or_create(first_name='test')
