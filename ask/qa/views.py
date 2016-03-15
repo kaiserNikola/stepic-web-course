@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404 
 from django.core.paginator import Paginator, EmptyPage
-from qa.models import Question
+from qa.models import Question, Answer
+from qa.forms import AskForm, AnswerForm
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -45,7 +46,36 @@ def question(request, id):
 		q = Question.objects.get(id=int(id))
 	except Question.DoesNotExist:
 		raise Http404	
+	if request.method == 'POST':
+		form = AnswerForm(request.POST)
+		if form.is_valid():
+			answer = form.save()
+			return redirect(q.get_absolute_url())			
+	else:
+		form = AnswerForm(initial={'question': q.pk})			
 	return render(request, 'qa/question.html', {
-		'q': q
+		'q': q,
+		'form': form
 	})
 	
+def ask_form(request):
+	if request.method == 'POST':
+		form = AskForm(request.POST)
+		if form.is_valid():
+			q = form.save()
+			return redirect(q.get_absolute_url())			
+	else:
+		form = AskForm()	
+	return render(request, 'qa/ask.html', {
+		'form': form
+	})	
+	
+def answer_form(request):
+	if request.method == 'POST':
+		form = AnswerForm(request.POST)
+		if form.is_valid():
+			answer = form.save()
+			return redirect(answer.question.get_absolute_url())			
+	return render(request, 'qa/ask.html', {
+		'form': form
+	})			

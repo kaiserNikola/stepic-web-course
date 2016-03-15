@@ -6,10 +6,27 @@
 
 <p>{{ q.text }}</p>
 
+<h1>Answers</h1>
+
 <ul>
 	{% for a in q.answer_set.all %}
 	<li>{{ a.author }}: {{ a.text }}</li>
+	{% empty %}
+	No answers
 	{% endfor %}
 </ul>
+
+<h1>Будь мужиком, ответь на вопрос!</h1>
+<form method='post' action="/answer/">
+	{% csrf_token %}
+	<table>
+		{{ form.as_table }}
+	</table>
+
+	<input type=submit value="Answer em!">
+</form>
+
+<br>
+<a href="/">all questions!</a>
 
 {% endblock %}

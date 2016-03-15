@@ -1,0 +1,16 @@
+{% extends 'qa/base.html' %}
+
+{% block content %}
+
+<h1>Задай вопрос, товарищ!</h1>
+
+<form method='post' action="">
+	{% csrf_token %}
+	<table>
+		{{ form.as_table }}
+	</table>
+
+	<input type=submit value="Ask em!">
+</form>
+
+{% endblock %}

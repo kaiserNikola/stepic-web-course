@@ -9,7 +9,7 @@ class Question(models.Model):
 	added_at = models.DateTimeField(verbose_name='дата добавления вопроса', default=timezone.now)
 	rating   = models.IntegerField(default=0, verbose_name='рейтинг вопроса')
 	author   = models.ForeignKey(User, verbose_name='автор вопроса', related_name='questions')
-	likes    = models.ManyToManyField(User, verbose_name='список пользователей, поставивших "лайк"', related_name='liked_questions', null=True, blank=True)
+	likes    = models.ManyToManyField(User, verbose_name='список пользователей, поставивших "лайк"', related_name='liked_questions', blank=True)
 	
 	def get_absolute_url(self):
 		return reverse('question', kwargs={'id': self.pk})
