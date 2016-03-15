@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404 
 from django.core.paginator import Paginator, EmptyPage
 from qa.models import Question, Answer
-from qa.forms import AskForm, AnswerForm
+from qa.forms import AskForm, AnswerForm, SignupForm, LoginForm
+from django.contrib.auth import login, logout
 
 def test(request, *args, **kwargs):
     return HttpResponse('OK')
@@ -46,21 +47,15 @@ def question(request, id):
 		q = Question.objects.get(id=int(id))
 	except Question.DoesNotExist:
 		raise Http404	
-	if request.method == 'POST':
-		form = AnswerForm(request.POST)
-		if form.is_valid():
-			answer = form.save()
-			return redirect(q.get_absolute_url())			
-	else:
-		form = AnswerForm(initial={'question': q.pk})			
 	return render(request, 'qa/question.html', {
 		'q': q,
-		'form': form
+		'form': AnswerForm(initial={'question': q.pk})
 	})
 	
 def ask_form(request):
 	if request.method == 'POST':
 		form = AskForm(request.POST)
+		form._user = request.user
 		if form.is_valid():
 			q = form.save()
 			return redirect(q.get_absolute_url())			
@@ -73,9 +68,41 @@ def ask_form(request):
 def answer_form(request):
 	if request.method == 'POST':
 		form = AnswerForm(request.POST)
+		form._user = request.user
 		if form.is_valid():
 			answer = form.save()
 			return redirect(answer.question.get_absolute_url())			
-	return render(request, 'qa/ask.html', {
+	return render(request, 'qa/question.html', {
 		'form': form
 	})			
+
+
+
+def signup(request):
+	if request.method == 'POST':
+		form = SignupForm(request.POST)
+		if form.is_valid():
+			user = form.save()
+			user.backend = 'django.contrib.auth.backends.ModelBackend'
+			login(request, user)
+			return redirect('recent')	
+	else:		
+		form = SignupForm()			
+	return render(request, 'qa/signup.html', {
+		'form': form
+	})			
+
+def login_user(request):
+	if request.method == 'POST':
+		form = LoginForm(request.POST)
+		if form.is_valid():
+			login(request, form.user)
+			return redirect('recent')	
+	else:		
+		form = LoginForm()	
+		if request.user.is_authenticated():
+			print('logout')
+			logout(request)				
+	return render(request, 'qa/signup.html', {
+		'form': form
+	})	
